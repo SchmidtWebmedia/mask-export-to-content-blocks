@@ -25,7 +25,7 @@ vendor/bin/typo3 mask-export-to-content-blocks:prepare --path="packages/cceexpor
 
 ### Step 2
 After execution was succesful, you will find the migration.json in this extension:
-`Resources/Private/Update/migration.json`
+`fileadmin/mask_export_to_content_blocks/migration.json`
 
 There you have to maintain your ContentBlock CEs and fields.
 e.g.

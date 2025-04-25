@@ -7,9 +7,11 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 #[Autoconfigure(tags: [
@@ -29,6 +31,7 @@ class MigrateJsonCommand extends Command
         $migrationJson = $this->getMigrationJson();
 
         if(!$this->validateMigrationJson($migrationJson)) {
+            $output->writeln('<error>JSON is not valid, ContentBlock CTypes are missing</error>');
             return Command::FAILURE;
         }
 
@@ -82,7 +85,7 @@ class MigrateJsonCommand extends Command
     }
 
     private function getMigrationJson() : array {
-        $path = 'EXT:'.$this->extensionKey.'/Resources/Private/Update/migration.json';
+        $path = Environment::getPublicPath() . '/fileadmin/'.$this->extensionKey.'/migration.json';
         return json_decode(file_get_contents(GeneralUtility::getFileAbsFileName($path)), true);
     }
 

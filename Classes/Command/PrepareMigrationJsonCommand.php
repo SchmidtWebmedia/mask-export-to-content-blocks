@@ -9,6 +9,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 #[Autoconfigure(tags: [
@@ -52,7 +53,7 @@ class PrepareMigrationJsonCommand extends Command
 
         $newData = $this->transformData();
 
-        $outputPath = GeneralUtility::getFileAbsFileName('EXT:'.$this->extensionKey.'/Resources/Private/Update/migration.json');
+        $outputPath = Environment::getPublicPath() . '/fileadmin/'.$this->extensionKey.'/migration.json';
 
         GeneralUtility::mkdir_deep(dirname($outputPath));
 
