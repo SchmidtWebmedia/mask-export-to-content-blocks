@@ -46,7 +46,7 @@ class MigrateJsonCommand extends Command
                     foreach ($migrationRecord['fields'] as $field) {
                         $value = $maskElement[$field['mask']];
                         $fieldType = $field['type'] ?? null;
-                        if($fieldType === 'text') {
+                        if($fieldType === 'string') {
                             $value = $value === null ? '' : $value;
                         } else if($fieldType === 'integer') {
                             $value = $value === null ? 0 : $value;

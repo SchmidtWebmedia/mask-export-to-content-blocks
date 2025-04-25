@@ -2,9 +2,11 @@
 namespace SchmidtWebmedia\MaskExportToContentBlocks\Command;
 
 
+use stdClass;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -26,14 +28,15 @@ class PrepareMigrationJsonCommand extends Command
     private ?string $extensionName = null;
 
     protected function configure() : void {
-        $this->addArgument(
+        $this->addOption(
             'path',
-            InputArgument::REQUIRED,
+            '',
+            InputOption::VALUE_REQUIRED,
             'Path to mask.json from mask_export extension'
         );
     }
     protected function execute(InputInterface $input, OutputInterface $output): int {
-        $path = $input->getArgument('path');
+        $path = $input->getOption('path');
 
         $output->writeln('<info>Staring Migrating MASK JSON</info>');
 
@@ -91,15 +94,21 @@ class PrepareMigrationJsonCommand extends Command
             $type = $tca[$oldField]['type'] ?? null;
             $newField = [];
             if($type === 'inline') {
-                $newField['table'] = $this->transformTable($oldField);
+                $newField['table']['fields'] = $this->transformTable($oldField);
             }
             $newField = array_merge([
                 'mask' => str_replace('tx_mask_', 'tx_'.$this->extensionName.'_', $oldField),
-                'contentBlock' => ''
+                'contentBlock' => '',
+                'ignore' => false
             ], $newField);
 
             if($type !== null) {
                 $newField['type'] = $type;
+
+                if($type === 'select') {
+                    $newField['remapping'] = new stdClass();
+                }
+
             }
 
             $output[] = $newField;
