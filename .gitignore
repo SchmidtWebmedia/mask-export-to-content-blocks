@@ -16,8 +16,8 @@
 /typo3
 /typo3_src
 /typo3_src-*
-/Packages
 /.htaccess
 /index.php
 # Ignore temp directory.
 /typo3temp/
+/Resources/Private/Update/

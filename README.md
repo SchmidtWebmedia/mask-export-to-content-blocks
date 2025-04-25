@@ -1,2 +1,2 @@
 # mask-export-to-content-blocks
-TYPO3 Extension to migrate your Mask Export extension to ContentBlocks
+TYPO3 extension for semi-automatic migration of your mask export extension to ContentBlocks

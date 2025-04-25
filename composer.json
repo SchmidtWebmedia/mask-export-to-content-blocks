@@ -1,0 +1,36 @@
+{
+    "name": "schmidtwebmedia/mask-export-to-content-blocks",
+    "type": "typo3-cms-extension",
+    "description": "TYPO3 extension for semi-automatic migration of your mask export extension to ContentBlocks.",
+    "keywords": [
+        "TYPO3 CMS",
+        "Extension",
+        "contentblocks",
+        "mask_export"
+    ],
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Marco Schmidt",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=8.2",
+        "typo3/cms-core": "^12.4",
+        "friendsoftypo3/content-blocks": "^0.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "SchmidtWebmedia\\MaskExportToContentBlocks\\": "Classes"
+        }
+    },
+    "replace": {
+        "typo3-ter/mask_export_to_content_blocks": "*"
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "mask_export_to_content_blocks"
+        }
+    }
+}
