@@ -11,7 +11,6 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 #[Autoconfigure(tags: [
@@ -28,18 +27,19 @@ class MigrateJsonCommand extends Command
     private string $extensionKey = 'mask_export_to_content_blocks';
 
     protected function execute(InputInterface $input, OutputInterface $output): int {
+        $output->writeln('<info>Starting of migration</info>');
         $migrationJson = $this->getMigrationJson();
-
-        if(!$this->validateMigrationJson($migrationJson)) {
-            $output->writeln('<error>JSON is not valid, ContentBlock CTypes are missing</error>');
-            return Command::FAILURE;
-        }
 
         $maskElements = $this->getAllMaskElements();
 
         foreach ($maskElements as $maskElement) {
             $queryBuilder = $this->getQueryBuilder($this->ttContentTable);
             $migrationRecord = $migrationJson[$maskElement['CType']] ?? null;
+
+            if($migrationRecord['contentBlock'] === '' || $migrationRecord['contentBlock'] === null) {
+                $output->writeln('<info>'.$maskElement['CType'].' will be skipped because of missing ContentBlock</info>');
+                continue;
+            }
             if($migrationRecord !== null) {
                 $queryBuilder->update($this->ttContentTable)
                     ->where(
