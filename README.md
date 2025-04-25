@@ -3,13 +3,19 @@ TYPO3 extension for semi-automatic migration of your mask export extension to Co
 
 You have your own mask_export extension and you want to use ContentBlocks now? With this extension you are able to do a semi-automication migration of your used fields.
 
+## Install
+```bash
+composer require schmidtwebmedia/mask-export-to-content-blocks --dev
+```
+
+
 ## Description
 
 The migration commands are executed on CLI.
 
-### Step 0
-
 > Important Step: Create Backup from your current database before you execute these CLI commands.
+
+> It does not create any ContentBlock Elements, you have to create it on your own. The only thing what happens here is, that the mapping will be updated.
 
 ### Step 1
 
