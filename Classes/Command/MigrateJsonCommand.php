@@ -75,7 +75,7 @@ class MigrateJsonCommand extends Command
             }
         }
 
-
+        $output->writeln('<info>Migration finished</info>');
         return Command::SUCCESS;
     }
 
