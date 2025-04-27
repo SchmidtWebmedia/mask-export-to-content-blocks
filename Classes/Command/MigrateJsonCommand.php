@@ -32,6 +32,11 @@ class MigrateJsonCommand extends Command
 
         $maskElements = $this->getAllMaskElements();
 
+        if(count($maskElements) === 0) {
+            $output->writeln('<error>No unmigrated mask elements found</error>');
+            return Command::FAILURE;
+        }
+
         foreach ($maskElements as $maskElement) {
             $queryBuilder = $this->getQueryBuilder($this->ttContentTable);
             $migrationRecord = $migrationJson[$maskElement['CType']] ?? null;
