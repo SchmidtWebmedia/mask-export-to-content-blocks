@@ -2,11 +2,12 @@
 TYPO3 extension for semi-automatic migration of your mask export extension to ContentBlocks
 
 You have your own mask_export extension and you want to use ContentBlocks now? With this extension you are able to do a semi-automication migration of your used fields.
-  
+
 
 <a href="https://www.buymeacoffee.com/schmidtwebmedia" target="_blank">
-  <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;">
+  <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 35px !important;">
 </a>
+
 
 ## Install
 ```bash
