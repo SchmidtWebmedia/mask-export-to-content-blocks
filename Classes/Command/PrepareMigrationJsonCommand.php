@@ -51,6 +51,10 @@ class PrepareMigrationJsonCommand extends Command
         $maskJson = file_get_contents($path);
         $this->maskJson = json_decode($maskJson, true);
 
+        if(array_key_exists('tables', $this->maskJson)) {
+            $this->maskJson = $this->maskJson['tables'];
+        }
+
         $newData = $this->transformData();
 
         $outputPath = Environment::getPublicPath() . '/fileadmin/'.$this->extensionKey.'/migration.json';
@@ -67,8 +71,8 @@ class PrepareMigrationJsonCommand extends Command
     private function transformData() : array {
         $output = [];
 
-        $configuration = $this->maskJson['tables']['mask_export']['elements']['configuration'];
-        $tt_content = $this->maskJson['tables']['tt_content'];
+        $configuration = $this->maskJson['mask_export']['elements']['configuration'];
+        $tt_content = $this->maskJson['tt_content'];
 
         $this->extensionName = $configuration['label'];
         $contentElements = $configuration['columns'];
@@ -120,7 +124,7 @@ class PrepareMigrationJsonCommand extends Command
     }
 
     private function transformTable(string $fieldName) : array {
-        $table = $this->maskJson['tables'][$fieldName];
+        $table = $this->maskJson[$fieldName];
 
        return $this->transformFields($table['tca'], array_keys($table['tca']));
     }
