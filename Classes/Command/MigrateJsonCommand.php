@@ -37,7 +37,9 @@ class MigrateJsonCommand extends Command
             return Command::FAILURE;
         }
 
+        $counter = 1;
         foreach ($maskElements as $maskElement) {
+            $output->writeln("<info>Migrate ".$counter++."/".count($maskElements)."</info>");
             $queryBuilder = $this->getQueryBuilder($this->ttContentTable);
             $migrationRecord = $migrationJson[$maskElement['CType']] ?? null;
 
