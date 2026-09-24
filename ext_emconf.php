@@ -3,7 +3,7 @@
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Mask_Export to ContentBlocks',
     'description' => 'TYPO3 extension for semi-automatic migration of your mask export extension to ContentBlocks.',
-    'version' => '0.9.0',
+    'version' => '0.9.2',
     'state' => 'beta',
     'author' => 'Marco Schmidt',
     'author_email' => 'typo@schmidt-webmedia.de',
