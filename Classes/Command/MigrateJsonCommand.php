@@ -64,7 +64,14 @@ class MigrateJsonCommand extends Command
 
                         $queryBuilder->set($field['contentBlock'], $value);
                         if($fieldType === 'file') {
-                            $this->updateSysFileReference($maskElement['pid'], $maskElement['uid'], $field['contentBlock'], null);
+                            $this->updateSysFileReference(
+                                $maskElement['pid'],
+                                $maskElement['uid'],
+                                $field['mask'],
+                                $this->ttContentTable,
+                                $field['contentBlock'],
+                                null
+                            );
                         }
 
                         if(array_key_exists('table', $field)) {
@@ -110,12 +117,21 @@ class MigrateJsonCommand extends Command
             ->fetchAllAssociative();
     }
 
-    private function updateSysFileReference(int $pid, int $uid, string $fieldName, ?string $tableName) : void {
+    private function updateSysFileReference(
+        int $pid,
+        int $uid,
+        string $sourceFieldName,
+        string $sourceTableName,
+        string $fieldName,
+        ?string $tableName
+    ) : void {
         $queryBuilder = $this->getQueryBuilder('sys_file_reference');
         $queryBuilder->update('sys_file_reference')
             ->where(
                 $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid)),
-                $queryBuilder->expr()->eq('uid_foreign', $queryBuilder->createNamedParameter($uid))
+                $queryBuilder->expr()->eq('uid_foreign', $queryBuilder->createNamedParameter($uid)),
+                $queryBuilder->expr()->eq('fieldname', $queryBuilder->createNamedParameter($sourceFieldName)),
+                $queryBuilder->expr()->eq('tablenames', $queryBuilder->createNamedParameter($sourceTableName))
             )
             ->set('fieldname', $fieldName);
 
@@ -217,7 +233,14 @@ class MigrateJsonCommand extends Command
                     $newRecord['l10n_diffsource'] = str_replace($oldRecord[$field['mask']], $newRecord[$field['contentBlock']], $oldRecord['l10n_diffsource']);
 
                     if(($field['type'] ?? null) === 'file') {
-                        $this->updateSysFileReference($oldRecord['pid'], $oldRecord['uid'], $field['contentBlock'], $migrationRecord['contentBlock']);
+                        $this->updateSysFileReference(
+                            $oldRecord['pid'],
+                            $oldRecord['uid'],
+                            $field['mask'],
+                            $migrationRecord['mask'],
+                            $field['contentBlock'],
+                            $migrationRecord['contentBlock']
+                        );
                     }
                 }
 
